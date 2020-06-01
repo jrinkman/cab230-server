@@ -73,7 +73,7 @@ router.post('/login', async (req, res) => {
 
     // Check whether the user already exists
     if (users.length === 0) {
-      res.status(400).json({
+      res.status(401).json({
         error: true,
         message: 'Incorrect email or password',
       });
@@ -95,10 +95,10 @@ router.post('/login', async (req, res) => {
       res.status(200).json({
         token_type: 'Bearer',
         token,
-        expires,
+        expires_in: expires,
       });
     } else {
-      res.status(400).json({
+      res.status(401).json({
         error: true,
         message: 'Incorrect email or password',
       });

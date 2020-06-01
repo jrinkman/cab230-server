@@ -84,7 +84,7 @@ router.get('/symbols', async (req, res) => {
   }
 });
 
-router.get('/symbols/:symbol', async (req, res) => {
+router.get('/:symbol', async (req, res) => {
   // Ensure that our query params are valid
   if (Object.keys(req.query).length > 0) {
     res.status(400).json({

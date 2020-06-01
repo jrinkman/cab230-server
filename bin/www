@@ -5,8 +5,15 @@
  */
 
 const debug = require('debug')('cab230-server:server');
-const http = require('http');
+const https = require('https');
+const fsp = require('fs').promises;
 const app = require('../app');
+
+/**
+ * Define a HTTP server variable.
+ */
+
+let server;
 
 /**
  * Normalize a port into a number, string, or false.
@@ -33,14 +40,8 @@ function normalizePort(val) {
  * Get port from environment and store in Express.
  */
 
-const port = normalizePort(process.env.PORT || '3000');
+const port = normalizePort(process.env.PORT || '443');
 app.set('port', port);
-
-/**
- * Create HTTP server.
- */
-
-const server = http.createServer(app);
 
 /**
  * Event listener for HTTP server "error" event.
@@ -82,13 +83,25 @@ function onListening() {
   debug(`Listening on ${bind}`);
 }
 
+(async () => {
+  try {
+    // Asynchronously read the private key and certificate
+    const credentials = {
+      key: await fsp.readFile('./ssl/cert.key', 'utf8'),
+      cert: await fsp.readFile('./ssl/cert.pem', 'utf8'),
+    };
 
-/**
- * Listen on provided port, on all network interfaces.
- */
+    // Create the server
+    server = https.createServer(credentials, app);
 
-server.listen(port);
-server.on('error', onError);
-server.on('listening', onListening);
+    /**
+     * Listen on provided port, on all network interfaces.
+     */
 
-console.log(`Server listening on port ${port}!`);
+    server.listen(port);
+    server.on('error', onError);
+    server.on('listening', onListening);
+  } catch (error) {
+    console.log(error);
+  }
+})();
