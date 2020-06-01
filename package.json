@@ -3,14 +3,26 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "start": "node ./bin/www"
+    "start": "node ./bin/www",
+    "mon": "nodemon",
+    "knex-init": "knex init",
+    "lint-init": "eslint --init"
   },
   "dependencies": {
+    "bcrypt": "^4.0.1",
     "cookie-parser": "~1.4.4",
     "debug": "~2.6.9",
     "express": "~4.16.1",
-    "http-errors": "~1.6.3",
     "jade": "~1.11.0",
-    "morgan": "~1.9.1"
+    "jsonwebtoken": "^8.5.1",
+    "knex": "^0.21.1",
+    "morgan": "~1.9.1",
+    "mysql": "^2.18.1"
+  },
+  "devDependencies": {
+    "eslint": "^6.8.0",
+    "eslint-config-airbnb-base": "^14.1.0",
+    "eslint-plugin-import": "^2.20.2",
+    "nodemon": "^2.0.4"
   }
 }
