@@ -1,7 +1,6 @@
 /* eslint-disable import/order */
 // Main module imports
 const express = require('express');
-const path = require('path');
 const cookieParser = require('cookie-parser');
 const logger = require('morgan');
 const cors = require('cors');
@@ -26,18 +25,34 @@ app.use((req, res, next) => {
   next();
 });
 
-// view engine setup
-app.set('views', path.join(__dirname, 'views'));
-app.set('view engine', 'jade');
+// Improve morgan logging output
+logger.token('req', (req) => JSON.stringify(req.headers, null, 2));
+logger.token('res', (req, res) => {
+  const headers = {};
+
+  // Update the headers object with each header name and value
+  res.getHeaderNames().forEach((h) => {
+    headers[h] = res.getHeader(h);
+  });
+
+  return JSON.stringify(headers, null, 2);
+});
 
 // Add app middleware
 app.use(helmet());
 app.use(cors());
-app.use(logger('dev'));
+app.use(logger(':method :url :status :response-time ms\n\n-- REQUEST --\n:req\n\n-- RESPONSE --\n:res'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
-app.use(express.static(path.join(__dirname, 'public')));
+
+// Create our hello-world route
+app.get('/', (req, res) => {
+  res.status(200).json({
+    message: 'Welcome to the Stocks API!',
+    version: '1.0.0',
+  });
+});
 
 // Implement our routers
 app.use('/stocks', stocksRouter);

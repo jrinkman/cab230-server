@@ -13,7 +13,7 @@ components:
       bearerFormat: JWT
 
 servers:
-  - url: http://131.181.190.87:3000
+  - url: https://localhost
 paths:
   /stocks/symbols:
     get:
