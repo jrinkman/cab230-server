@@ -56,7 +56,7 @@ router.get('/symbols', async (req, res) => {
   // Define a base query to retireve basic stock information
   let baseQuery = req
     .db.from('stocks')
-    .select('name', 'symbol', 'industry').groupBy('symbol');
+    .select('name', 'symbol', 'industry').groupBy('name', 'symbol', 'industry');
 
   try {
     // If we recieved an industry parameter, update the query with it
