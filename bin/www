@@ -87,8 +87,8 @@ function onListening() {
   try {
     // Asynchronously read the private key and certificate
     const credentials = {
-      key: await fsp.readFile('./ssl/cert.key', 'utf8'),
-      cert: await fsp.readFile('./ssl/cert.pem', 'utf8'),
+      key: await fsp.readFile('/etc/ssl/private/node-selfsigned.key', 'utf8'),
+      cert: await fsp.readFile('/etc/ssl/certs/node-selfsigned.crt', 'utf8'),
     };
 
     // Create the server
